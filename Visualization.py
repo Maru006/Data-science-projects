@@ -56,13 +56,18 @@ data_legend.sort_index(ascending=True, inplace=True)  # sorting index to represe
 # a line plot which shows the average variation between predicted and actual: lowest and highest temperature.
 def legendPlot():
     print(data_legend)
-    data_legend.columns.astype('str')
     data_legend['low_temperature'] = data_legend['low_temperature'].astype(float)
     data_legend['high_temperature'] = data_legend['high_temperature'].astype(float)
-    sns.set_theme()
-    sns.lineplot(data=data_legend, x='date', y='low_temperature', label='Low Temperature')
-    sns.lineplot(data=data_legend, x='date', y='high_temperature', label='High Temperature')
-    plt.title('Weather Legend')
+
+    sns.lineplot(data=data_legend, x='date', y='low_temperature', marker='o',label='Lowest recorded Temperature')
+    sns.lineplot(data=data_legend, x='date', y='high_temperature', marker='o', label='Highest recorded Temperature')
+
+    plt.annotate('Shaded areas show variation in recorded/predicted temperatures',
+                 xy=(data_legend['date'][7], 15),
+                 fontsize=10)
+    plt.xlabel('Dates')
+    plt.ylabel('Temperature')
+    plt.title('Mean-Legend temperature readings')
     plt.show()
 
 
@@ -122,6 +127,8 @@ def line_predicted_7vs1_actual():
     plt.show()
 
 
+legendPlot()   
 box_predicted_7vs1_actual()
 line_predicted_7vs1_actual()
 connection.close()
+
