@@ -56,15 +56,15 @@ data_legend.sort_index(ascending=True, inplace=True)  # sorting index to represe
 # a line plot which shows the average variation between predicted and actual: lowest and highest temperature.
 def legendPlot():
     print(data_legend)
-    data_legend['low_temperature'] = data_legend['low_temperature'].astype(float)
-    data_legend['high_temperature'] = data_legend['high_temperature'].astype(float)
+    data_legend['low_temperature'] = data_legend['low_temperature'].astype(float) # may not be necessary
+    data_legend['high_temperature'] = data_legend['high_temperature'].astype(float) # may not be necessary
 
-    sns.lineplot(data=data_legend, x='date', y='low_temperature', marker='o',label='Lowest recorded Temperature')
-    sns.lineplot(data=data_legend, x='date', y='high_temperature', marker='o', label='Highest recorded Temperature')
+    sns.lineplot(data=data_legend, x='date', y='low_temperature', marker='o',label='Lowest Temperature')
+    sns.lineplot(data=data_legend, x='date', y='high_temperature', marker='o', label='Highest Temperature')
 
-    plt.annotate('Shaded areas show variation in recorded/predicted temperatures',
+    plt.annotate('Shaded areas show aggregates of recorded and predicted temperatures'',
                  xy=(data_legend['date'][7], 15),
-                 fontsize=10)
+                 fontsize=8)
     plt.xlabel('Dates')
     plt.ylabel('Temperature')
     plt.title('Mean-Legend temperature readings')
@@ -90,16 +90,19 @@ sevens_7 = data[data['frequency'] == 7]
 def box_predicted_7vs1_actual():
     fig, [ax1, ax2] = plt.subplots(nrows=2, ncols=1)
     fig.supylabel('Temperature')
-    fig.suptitle('Difference between 6th forecast and actual recorded temperature')
+    fig.suptitle('Difference between Forecast and Actual recorded temperature')
 
-    ax1.boxplot([sevens_1['low_temperature'], sevens_7['low_temperature']])
-    ax1.set_title('Lowest Temperature readings')
+    ax1.boxplot([sevens_7['high_temperature'], sevens_1['high_temperature']])
+    ax1.set_title('Highest Temperature')
     ax1.set_xticklabels(labels=[])
 
-    ax2.boxplot([sevens_1['high_temperature'], sevens_7['high_temperature']])
-    ax2.set_title('Highest Temperature readings')
-    ax2.set_xticklabels(labels=['Actual', '6th Predicted'])
+    ax2.boxplot([sevens_7['low_temperature'], sevens_1['low_temperature']])
+    ax2.set_title('Lowest Temperature')
+    ax2.set_xticklabels(labels=['Predicted', 'Actual'])
 
+    plt.annotate('predicted temperatures are 6 days in advance',
+                 xy=(1.05, 6),
+                 fontsize=8)
     plt.subplots_adjust(hspace=.05)
     plt.tight_layout()
     plt.show()
@@ -110,24 +113,28 @@ def line_predicted_7vs1_actual():
     fig, [ax1, ax2] = plt.subplots(nrows=2, ncols=1)
     fig.supylabel('Temperature')
     fig.supxlabel('Dates')
-    fig.suptitle('Contrast between 6th forecast and actual recorded temperature')
+    fig.suptitle('Contrast between Forecast and Actual recorded temperature')
 
-    ax1.plot(sevens_1['date'], sevens_1['low_temperature'],'.-', label='Actual')
-    ax1.plot(sevens_7['date'], sevens_7['low_temperature'],'.-', label='Predicted')
-    ax1.set_title('Lowest Temperature readings')
+    print(sevens_1)
+    ax1.plot(sevens_1['date'], sevens_1['low_temperature'], '.-', label='Actual')
+    ax1.plot(sevens_7['date'], sevens_7['low_temperature'], '.-', label='Predicted')
+    ax1.set_title('Lowest Temperature')
     ax1.set_xticklabels(labels=[])
     ax1.legend()
 
     ax2.plot(sevens_1['date'], sevens_1['high_temperature'], '.-')
     ax2.plot(sevens_7['date'], sevens_7['high_temperature'], '.-')
-    ax2.set_title('Highest Temperature readings')
+    ax2.set_title('Highest Temperature')
 
+    plt.annotate('predicted temperatures are 6 days in advance',
+                 xy=(sevens_1['date'][27], 10),
+                 fontsize=10)
     plt.subplots_adjust(hspace=.05)
     plt.tight_layout()
     plt.show()
 
 
-legendPlot()   
+legendPlot()
 box_predicted_7vs1_actual()
 line_predicted_7vs1_actual()
 connection.close()
