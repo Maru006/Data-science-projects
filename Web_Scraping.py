@@ -1,15 +1,19 @@
+import datetime
+date = datetime.datetime.now().strftime('%d/%m/%Y')
+
+import logging
+logging.basicConfig(level=logging.DEBUG,
+                format='%(message)s',
+                filename='%slog' % __file__[:-2])
+
 from bs4 import BeautifulSoup
 import requests
 import sqlite3
 import pandas as pd
-
-# allows confirmatory viewing of table attributes and values
 pd.set_option('display.max_rows', 1000)
 pd.set_option('display.max_columns', 1000)
 pd.set_option('display.width', 1000)
-import datetime
 
-date = datetime.datetime.now()
 
 url = requests.get(
     'https://www.metoffice.gov.uk/weather/forecast/gcpu7tnmn#?nearestTo=Morden%20(Merton)&date=2021-08-16')
@@ -75,7 +79,11 @@ def weather_linear():
     print(pd.read_sql('SELECT * FROM weather_linear', connection))
 
 
-weather_legend()
-weather_linear()
 
-connection.close()
+
+
+if __name__ == '__main__':
+    weather_legend()
+    weather_linear()
+    connection.close()
+    logging.info(f'Web_scraping Last run-time: {date}')
