@@ -1,11 +1,9 @@
 import datetime
-date = datetime.datetime.now().strftime('%d/%m/%Y')
-
+date = datetime.datetime.now()
 import logging
 logging.basicConfig(level=logging.DEBUG,
                 format='%(message)s',
                 filename='%slog' % __file__[:-2])
-
 from bs4 import BeautifulSoup
 import requests
 import sqlite3
@@ -80,10 +78,9 @@ def weather_linear():
 
 
 
-
-
 if __name__ == '__main__':
     weather_legend()
     weather_linear()
     connection.close()
-    logging.info(f'Web_scraping Last run-time: {date}')
+    date = datetime.datetime.now().strftime('%d/%m/%Y')
+    logging.info(f'SUCCESSFUL :: Web_scraping Last run-time: {date}')
