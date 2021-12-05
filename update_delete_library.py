@@ -72,7 +72,7 @@ def delete(url, table, setID):
                 logging.warning(f' {setID} is a {type(setID)}. Value must be a unit of int. '
                                 f'Try enclosing your argument inside an iterable function instead.')
         except sqlite3.OperationalError:
-            logging.warning(f' {table} may not exist')
+            logging.warning(f' Table: {table} may not exist')
             cursor.execute("SELECT name "
                            "FROM sqlite_master "
                            "WHERE type='table'")
