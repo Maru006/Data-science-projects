@@ -1,7 +1,7 @@
 # visualizing data gathered from Web_Scraping.py
 # ensure plenty of data before engaging with this material
 import seaborn as sns
-
+import numpy as np
 sns.set_theme()
 from matplotlib import pyplot as plt
 import pandas as pd
@@ -62,7 +62,7 @@ def legendPlot():
     sns.lineplot(data=data_legend, x='date', y='low_temperature', marker='o',label='Lowest Temperature')
     sns.lineplot(data=data_legend, x='date', y='high_temperature', marker='o', label='Highest Temperature')
 
-    plt.annotate('Shaded areas show aggregates of recorded and predicted temperatures'',
+    plt.annotate('Shaded areas show aggregates of recorded and predicted temperatures',
                  xy=(data_legend['date'][7], 15),
                  fontsize=8)
     plt.xlabel('Dates')
@@ -72,17 +72,14 @@ def legendPlot():
 
 
 # partitions dates which have 7 total observations from dates such as today and 6 days in advance that have only 1 variation
-sevens = data_legend[data_legend['frequency'] == 7]
-sevens_date = list(sevens['date'])
-sevens_indexes = []
-for i in sevens_date:
-    sevens_index = data_legend[data_legend['date'] == i].index
-    sevens_indexes.append(list(sevens_index))
-sevens_indexes = [item for sublist in sevens_indexes for item in sublist]  # indexes containing dates with complete records.
-data = data_legend.loc[sevens_indexes]
-data.sort_index(inplace=True)
-sevens_1 = data[data['frequency'] == 1]
-sevens_7 = data[data['frequency'] == 7]
+dates = list(data_legend.loc[np.where(data_legend['frequency'] == 5)].date)
+sevens = []
+for i in dates:
+    values = data_legend.loc[data_legend['date'] == i]
+    sevens.append(values)
+sevens = pd.concat(sevens)
+sevens_1 = sevens.loc[sevens['frequency'] == 1]
+sevens_7 = sevens.loc[sevens['frequency'] == 5]
 
 
 # run these section for weather-variability with complete forecast n=7, N=77
@@ -134,8 +131,9 @@ def line_predicted_7vs1_actual():
     plt.show()
 
 
-legendPlot()
-box_predicted_7vs1_actual()
-line_predicted_7vs1_actual()
-connection.close()
+if __name__ == '__main__':
+    legendPlot()
+    box_predicted_7vs1_actual()
+    line_predicted_7vs1_actual()
+    connection.close()
 
