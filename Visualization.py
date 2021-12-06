@@ -15,7 +15,7 @@ import threading
 from collections import Counter
 
 # connecting to the previous database
-connection = sqlite3.connect('C:\\Users\\Maru\\weather_scraping.db')
+connection = sqlite3.connect('***WHERE THE DATABASE URL WAS CREATED***')
 cursor = connection.cursor()
 
 # the following processing turns raw information into a manageable data set for analysis.
