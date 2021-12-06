@@ -16,7 +16,9 @@ def insert(url, table, date, low_temperature, high_temperature, summary_text):
         try:
             cursor.execute(f'INSERT INTO {table} (date, low_temperature, high_temperature, summary_text) '
                            f'VALUES ("{date}", "{low_temperature}", "{high_temperature}", "{summary_text}")')
-        except sqlite3.OperationalError:
+            connection.commit()
+        except sqlite3.OperationalError as error:
+            print(f'Error: \n {error}')
             logging.warning(f' database: {url} or table: {table} may not exist. Check info below:')
             cursor.execute("SELECT name "
                            "FROM sqlite_master "
@@ -41,8 +43,8 @@ def update(url, table, setVar, setVal, setID):
         try:
             cursor.execute(f'UPDATE {table} SET {setVar} = {setVal} WHERE ROWID = {setID}')
             connection.commit()
-            logging.info(' SUCCESSFUL :: Disconnected to Database')
-        except sqlite3.Error:
+        except sqlite3.Error as error:
+            print(f'Error: \n {error}')
             logging.warning(f' database: {url}, table: {table} or column: {setVar} may not exist. Check info below:')
             cursor.execute("SELECT name "
                            "FROM sqlite_master "
@@ -71,7 +73,8 @@ def delete(url, table, setID):
             else:
                 logging.warning(f' {setID} is a {type(setID)}. Value must be a unit of int. '
                                 f'Try enclosing your argument inside an iterable function instead.')
-        except sqlite3.OperationalError:
+        except sqlite3.OperationalError as error:
+            print(f'Error: \n {error}')
             logging.warning(f' Table: {table} may not exist')
             cursor.execute("SELECT name "
                            "FROM sqlite_master "
