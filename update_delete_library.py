@@ -8,7 +8,7 @@ pd.set_option('display.width', 1000)
 pd.set_option('display.max_colwidth', 1000)
 import sqlite3
 
-
+# this let you insert data manually.
 def insert(url, table, date, low_temperature, high_temperature, summary_text):
     try:
         connection = sqlite3.connect(url)
@@ -33,7 +33,7 @@ def insert(url, table, date, low_temperature, high_temperature, summary_text):
         logging.warning(f' Could not connect to {url}. If INFO: your existing tables are not shown, this means your url may not exist or is incorrect')
 
     
-    
+# this lets you update data manually.
 def update(url, table, setVar, setVal, setID):
     try:
         connection = sqlite3.connect(url)
@@ -60,7 +60,7 @@ def update(url, table, setVar, setVal, setID):
         logging.warning(f' Could not connect to {url}. If INFO: your existing tables are not shown, this means your url may not exist or is incorrect')
 
 
-
+# this lets you delete faulty data by their ROWID.
 def delete(url, table, setID):
     try:
         connection = sqlite3.connect(url)
