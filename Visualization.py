@@ -106,7 +106,8 @@ def comparison(compare, focus=False):
                           
             ax2.scatter(included_dates.iloc[np.where(included_dates['frequency'] == comp)].date,
                         included_dates.iloc[np.where(included_dates['frequency'] == comp)].low_temperature,
-                        label=f'{comp} days in advanced')
+                        label=f'{comp} days in advance'.replace('0 days in advance', 'That present day'))
+
             ax2.set_title('Lowest Temperature')
             
                        
