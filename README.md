@@ -3,5 +3,6 @@ This project's aim is to create your own weather report database and track its c
 
 
 ![Legend Plot](Figure_1.png)
+![Legend Plot](Figure_0.png)
 
 
