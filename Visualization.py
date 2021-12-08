@@ -102,15 +102,19 @@ def comparison(compare, focus=False):
             ax1.scatter(included_dates.iloc[np.where(included_dates['frequency'] == comp)].date,
                         included_dates.iloc[np.where(included_dates['frequency'] == comp)].high_temperature)
             ax1.set_xticklabels(labels=[])
+            ax1.set_title('Highest Temperature')
+                          
             ax2.scatter(included_dates.iloc[np.where(included_dates['frequency'] == comp)].date,
                         included_dates.iloc[np.where(included_dates['frequency'] == comp)].low_temperature,
                         label=f'{comp} days in advanced')
-
+            ax2.set_title('Lowest Temperature')
+            
+                       
         fig.supylabel('Temperature')
         fig.supxlabel('Dates')
-        plt.get_figlabels()  # still confusing to implement
+        #plt.get_figlabels()  # still confusing to implement
         plt.legend(loc='best')
-        plt.subplots_adjust(hspace=0.05)
+        plt.subplots_adjust(hspace=0.15)
         plt.suptitle(f'Custom-comparison between predicted temperatures')
         plt.show()
     if focus is True:
