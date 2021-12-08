@@ -48,7 +48,7 @@ for indexes in groups:  # 'indexes' returns a list containing indexes.
     for i in range(0, len(indexes), 1):  # this counts the length for each list of indexes
         frequencies.append(i)  # frequencies now return the ranges in ascending maximum len of each indexes
 data_legend = data_legend.assign(frequency=frequencies)
-data_legend['frequency'] = data_legend['frequency'] + 1
+data_legend['frequency'] = data_legend['frequency']
 data_legend.sort_index(ascending=True, inplace=True)  # sorting index to represent the order of record acquisition.
 
 
@@ -77,14 +77,14 @@ def comparison(compare, focus=False):
         try:
             maxim = max(compare)
             minim = min(compare)
-            if maxim <= 7 and minim >= 1:
+            if maxim <= 6 and minim >= 0:
                 for x in iter(compare):
                     dates = data_legend.loc[np.where(data_legend['frequency'] == x)].date
                     for date in dates:
                         included_dates.append(data_legend.loc[data_legend['date'] == date])
                     print(f'There were a total of {len(dates)} dates with frequency: {x}')
             else:
-                print(f'The maximum length for a forecast is 7, and the minimum is 1.'
+                print(f'The maximum length for a forecast is 6, and the minimum is 0.'
                       f'\n You have given a max of: {maxim} and a minimum of :{minim}')
                 return None
         except TypeError:
@@ -161,6 +161,6 @@ def box_predicted_7vs1_actual():
 if __name__ == '__main__':
     legendPlot()
     box_predicted_7vs1_actual()
-    comparison([1,7]) # by default this is the comparison. But you can add more than two numbers.
+    comparison([0, 6]) # by default this is the comparison. But you can add more than two numbers.
     connection.close()
 
