@@ -59,12 +59,20 @@ def legendPlot():
     data_legend['low_temperature'] = data_legend['low_temperature'].astype(float) # may not be necessary
     data_legend['high_temperature'] = data_legend['high_temperature'].astype(float) # may not be necessary
 
-    sns.lineplot(data=data_legend, x='date', y='low_temperature', marker='o',label='Lowest Temperature')
-    sns.lineplot(data=data_legend, x='date', y='high_temperature', marker='o', label='Highest Temperature')
+    sns.lineplot(data=data_legend, x='date',
+                 y='low_temperature',
+                 marker='o',
+                 label='Lowest Temperature')
+    sns.lineplot(data=data_legend,
+                 x='date',
+                 y='high_temperature',
+                 marker='o',
+                 label='Highest Temperature')
 
     plt.annotate('Shaded areas show aggregates of recorded and predicted temperatures',
                  xy=(data_legend['date'][7], 15),
                  fontsize=8)
+    plt.xticks(rotation=15)
     plt.xlabel('Dates')
     plt.ylabel('Temperature')
     plt.title('Mean-Legend temperature readings')
@@ -93,30 +101,34 @@ def comparison(compare, focus=False):
     except TypeError:
         print(f' {type(compare)} is not iterable. Comparisons can be made with an iterable specifier')
         return None
-    included_dates = pd.concat(included_dates)
-
+    included_dates = pd.concat(included_dates).reset_index() # cannot reindex by a duplicate axes...
     # visualization
     if focus is False:
         fig, [ax1, ax2] = plt.subplots(nrows=2, ncols=1)
         for comp in iter(compare):
-            ax1.scatter(included_dates.iloc[np.where(included_dates['frequency'] == comp)].date,
-                        included_dates.iloc[np.where(included_dates['frequency'] == comp)].high_temperature)
-            ax1.set_xticklabels(labels=[])
-            ax1.set_title('Highest Temperature')
-                          
-            ax2.scatter(included_dates.iloc[np.where(included_dates['frequency'] == comp)].date,
-                        included_dates.iloc[np.where(included_dates['frequency'] == comp)].low_temperature,
-                        label=f'{comp} days in advance'.replace('0 days in advance', 'That present day'))
+            print(included_dates[included_dates['frequency'] == comp]) # help check raw data for comparisons made via console.
+            high_temperature = sns.lineplot(ax=ax1,
+                                            x=included_dates.loc[included_dates['frequency'] == comp].date,
+                                            y=included_dates.loc[included_dates['frequency'] == comp].high_temperature,
+                                            marker='o')
+            high_temperature.set_xticklabels(labels=[])
+            high_temperature.set_xlabel(xlabel='')
+            high_temperature.set_title('Highest Temperature')
 
-            ax2.set_title('Lowest Temperature')
-            
-                       
-        fig.supylabel('Temperature')
-        fig.supxlabel('Dates')
-        #plt.get_figlabels()  # still confusing to implement
-        plt.legend(loc='best')
-        plt.subplots_adjust(hspace=0.15)
-        plt.suptitle(f'Custom-comparison between predicted temperatures')
+            low_temperature = sns.lineplot(ax=ax2,
+                                           x=included_dates.loc[included_dates['frequency'] == comp].date,
+                                           y=included_dates.loc[included_dates['frequency'] == comp].low_temperature,
+                                           marker='o',
+                                           **{'label':f'{comp} days in advance'.replace('0 days in advance', 'That present day')})
+            low_temperature.set_xlabel(xlabel='')
+            low_temperature.set_title('Lowest Temperature')
+
+            plt.suptitle(f'Custom-comparison between predicted temperatures')
+            plt.subplots_adjust(hspace=0.15)
+            fig.supylabel('Temperature')
+            # fig.supxlabel('Dates') might be crowded
+            plt.legend()
+            fig.autofmt_xdate(rotation=45)
         plt.show()
     if focus is True:
         pass
@@ -165,7 +177,7 @@ def box_predicted_7vs1_actual():
 
 if __name__ == '__main__':
     legendPlot()
-    box_predicted_7vs1_actual()
-    comparison([0, 6]) # by default this is the comparison. But you can add more than two numbers.
+    # box_predicted_7vs1_actual() future template for employing statistical analysis
+    comparison([0, 6]) # by default this is the comparison. But will implement a function where more comparisons can be made in pairs.
     connection.close()
 
