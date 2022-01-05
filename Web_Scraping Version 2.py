@@ -30,7 +30,7 @@ df = pd.DataFrame(
     {'Date': tabDay, 'L_Temperature': lowTemperature, 'H_Temperature': highTemperature, 'Notes': summaryText})
 
 # creates a database in the system. Pass your own directory
-connection = sqlite3.connect('C:\\Users\\Maru\\weather_scraping.db')  # change this directory for your database
+connection = sqlite3.connect('weather_scraping.db')  # change this directory for your database
 cursor = connection.cursor()
 
 
