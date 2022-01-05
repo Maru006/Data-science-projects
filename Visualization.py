@@ -21,8 +21,9 @@ cursor = connection.cursor()
 # the following processing turns raw information into a manageable data set for analysis.
 # turning a web-scraped 'date' attribute into a date-time object.
 data_legend = pd.read_sql('SELECT * FROM weather_legend', connection)
-data_legend['date'] = data_legend['date'] + '-2021'
-data_legend.loc[:, 'date'] = pd.to_datetime(data_legend['date'], format='%a-%d-%b-%Y')
+
+# data_legend['date'] = data_legend['date'] + '-2021'
+# data_legend.loc[:, 'date'] = pd.to_datetime(data_legend['date'], format='%a-%d-%b-%Y')          INNACURACY for web_scraper Version 2.py
 
 data_legend.columns = data_legend.columns.astype('str')
 data_legend['low_temperature'] = data_legend['low_temperature'].astype(float)
