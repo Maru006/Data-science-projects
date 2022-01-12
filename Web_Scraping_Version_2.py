@@ -47,6 +47,7 @@ def insert_values():
     for i, row in df.iterrows():
         insert_to_sql = f'INSERT INTO weather_legend (date, low_temperature, high_temperature, summary_text) VALUES ("{row[0]}", "{row[1]}", "{row[2]}", "{row[3]}")'
         cursor.execute(insert_to_sql)
+    connection.commit()
     print(pd.read_sql('SELECT * FROM weather_legend', connection))
 
 
@@ -62,6 +63,7 @@ def insert_last_value():
     for i, row in df_tail.iterrows():
         insert_to_sql = f'INSERT INTO weather_linear (date, low_temperature, high_temperature, summary_text) VALUES ("{row[0]}", "{row[1]}", "{row[2]}", "{row[3]}")'
         cursor.execute(insert_to_sql)
+    connection.commit()
     print(pd.read_sql('SELECT * FROM weather_linear', connection))
 
 
